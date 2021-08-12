@@ -1,3 +1,10 @@
+default:
+  image: m.docker-registry.ir/docker
+stages:
+  - build
+  - build_other
+  - deploy
+
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   IMAGE_TAG_LATEST: registry.mybdok.ir/snosratiershad/bdokpublic/python:latest
