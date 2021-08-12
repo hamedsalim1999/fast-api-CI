@@ -1,0 +1,34 @@
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  IMAGE_TAG_LATEST: registry.mybdok.ir/snosratiershad/bdokpublic/python:latest
+  IMAGE_TAG_PRODUCTION: registry.mybdok.ir/snosratiershad/bdokpublic/python:production
+  NGINX_IMAGE_TAG_LATEST: registry.mybdok.ir/snosratiershad/bdokpublic/python:latest
+
+image: $IMAGE_TAG_LATEST
+
+python-docker-build:
+  stage: build
+  before_script:
+    - echo "$REG_PASS" | docker login registry.mybdok.ir --username root --password-stdin
+  script:
+    - docker pull $IMAGE_TAG_LATEST || true
+    - docker build --cache-from $IMAGE_TAG_PRODUCTION -t $IMAGE_TAG_PRODUCTION -t $IMAGE_TAG_LATEST -f Dockerfile.composer .
+    - docker push $IMAGE_TAG_PRODUCTION
+    - docker push $IMAGE_TAG_LATEST
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+before_script:
+  - python -V  # Print out python version for debugging
+  - pip install virtualenv
+  - virtualenv venv
+  - source venv/bin/activate
+
+run:
+  script:
+    - pip install -r requirements/develop.txt
+    - python app/main.py
+
