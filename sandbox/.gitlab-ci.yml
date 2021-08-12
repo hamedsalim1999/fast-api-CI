@@ -16,11 +16,6 @@ python-docker-build:
     - docker push $IMAGE_TAG_PRODUCTION
     - docker push $IMAGE_TAG_LATEST
 
-cache:
-  paths:
-    - .cache/pip
-    - venv/
-
 before_script:
   - python -V  # Print out python version for debugging
   - pip install virtualenv
