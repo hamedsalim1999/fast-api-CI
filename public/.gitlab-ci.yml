@@ -1,0 +1,48 @@
+image: registry.mybdok.ir/infrastrucutre/docker/docker:latest
+
+services:
+    - registry.mybdok.ir/infrastrucutre/docker/docker:dind
+stages:
+  - build
+  - deploy
+
+
+variables:
+  IMAGE_TAG_LATEST: $CI_REGISTRY_IMAGE:latest
+  IMAGE_TAG_STAGING: $CI_REGISTRY_IMAGE:staging
+  IMAGE_TAG_PRODUCTION: $CI_REGISTRY_IMAGE:production
+
+
+
+
+python-docker-build:
+  stage: build
+  only:
+    - develop
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+  tags:
+    - docker
+  script:
+    - docker pull $IMAGE_TAG_LATEST || true
+    - docker build --cache-from $IMAGE_TAG_STAGING -t $IMAGE_TAG_STAGING -t $IMAGE_TAG_LATEST -f Dockerfile .
+    - docker push $IMAGE_TAG_PRODUCTION
+    - docker push $IMAGE_TAG_LATEST
+
+deploy:
+  stage: deploy
+  tags:
+    - deploy.staging
+
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - ssh -o StrictHostKeyChecking=no root@185.183.182.36"; sudo docker-compose up -d  --force-recreate"
+  rules:
+      - if: '$CI_COMMIT_BRANCH=="develop"'
+        when: always
+      - when: never
