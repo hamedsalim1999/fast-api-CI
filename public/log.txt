@@ -1,0 +1,146 @@
+[0KRunning with gitlab-runner 12.10.0 (c553af1a)
+[0;m[0K  on gitlab t4CWzPh_
+[0;msection_start:1628837280:prepare_executor
+[0K[0K[36;1mPreparing the "docker" executor[0;m
+[0;m[0KUsing Docker executor with image registry.mybdok.ir/infrastrucutre/docker/docker:latest ...
+[0;m[0KStarting service registry.mybdok.ir/infrastrucutre/docker/docker:dind ...
+[0;m[0KAuthenticating with credentials from /root/.docker/config.json
+[0;m[0KPulling docker image registry.mybdok.ir/infrastrucutre/docker/docker:dind ...
+[0;m[0KUsing docker image sha256:4f379b3b223739edc4e2f2862eb275d31da275cbc4232496a1321369299543e7 for registry.mybdok.ir/infrastrucutre/docker/docker:dind ...
+[0;m[0KWaiting for services to be up and running...
+[0;m
+[0;33m*** WARNING:[0;m Service runner-t4cwzph-project-13-concurrent-0-6c3281d245257a8b-registry.mybdok.ir__infrastrucutre__docker__docker-0 probably didn't start properly.
+
+Health check error:
+service "runner-t4cwzph-project-13-concurrent-0-6c3281d245257a8b-registry.mybdok.ir__infrastrucutre__docker__docker-0-wait-for-service" timeout
+
+Health check container logs:
+
+
+Service container logs:
+2021-08-13T06:48:02.765247678Z Generating RSA private key, 4096 bit long modulus (2 primes)
+2021-08-13T06:48:03.030143981Z ..........................++++
+2021-08-13T06:48:03.072853857Z ...++++
+2021-08-13T06:48:03.074557559Z e is 65537 (0x010001)
+2021-08-13T06:48:03.102650322Z Generating RSA private key, 4096 bit long modulus (2 primes)
+2021-08-13T06:48:03.790599879Z ..........................................................................................++++
+2021-08-13T06:48:03.999310097Z .............................++++
+2021-08-13T06:48:03.999932757Z e is 65537 (0x010001)
+2021-08-13T06:48:04.061688394Z Signature ok
+2021-08-13T06:48:04.061747727Z subject=CN = docker:dind server
+2021-08-13T06:48:04.062121839Z Getting CA Private Key
+2021-08-13T06:48:04.093271639Z /certs/server/cert.pem: OK
+2021-08-13T06:48:04.099879430Z Generating RSA private key, 4096 bit long modulus (2 primes)
+2021-08-13T06:48:05.971065726Z ...............................................................................................................................................................................................................................................................++++
+2021-08-13T06:48:07.429122974Z ..........................................................................................................................................................................................................................++++
+2021-08-13T06:48:07.429782361Z e is 65537 (0x010001)
+2021-08-13T06:48:07.488696316Z Signature ok
+2021-08-13T06:48:07.488736521Z subject=CN = docker:dind client
+2021-08-13T06:48:07.488746997Z Getting CA Private Key
+2021-08-13T06:48:07.514845128Z /certs/client/cert.pem: OK
+2021-08-13T06:48:07.608865667Z time="2021-08-13T06:48:07.605619614Z" level=info msg="Starting up"
+2021-08-13T06:48:07.610417948Z time="2021-08-13T06:48:07.609912020Z" level=warning msg="could not change group /var/run/docker.sock to docker: group docker not found"
+2021-08-13T06:48:07.610444199Z failed to load listeners: can't create unix socket /var/run/docker.sock: device or resource busy
+
+[0;33m*********[0;m
+
+[0KAuthenticating with credentials from /root/.docker/config.json
+[0;m[0KPulling docker image registry.mybdok.ir/infrastrucutre/docker/docker:latest ...
+[0;m[0KUsing docker image sha256:d2979b152a7d43f040c7aef88c4c83de4e545227622b1045adf6fe409293f803 for registry.mybdok.ir/infrastrucutre/docker/docker:latest ...
+[0;msection_end:1628837315:prepare_executor
+[0Ksection_start:1628837315:prepare_script
+[0K[0K[36;1mPreparing environment[0;m
+[0;mRunning on runner-t4cwzph-project-13-concurrent-0 via gitlab...
+section_end:1628837317:prepare_script
+[0Ksection_start:1628837317:get_sources
+[0K[0K[36;1mGetting source from Git repository[0;m
+[0;m[32;1mFetching changes with git depth set to 50...[0;m
+Reinitialized existing Git repository in /builds/snosratiershad/bdoksandbox/.git/
+From https://gitlab.mybdok.ir/snosratiershad/bdoksandbox
+ * [new ref]         bfad1ed140bcc8685d97fef24dceca001c4727dd -> refs/pipelines/2575
+   497e2ae..bfad1ed  develop    -> origin/develop
+[32;1mChecking out bfad1ed1 as develop...[0;m
+
+[32;1mSkipping Git submodules setup[0;m
+section_end:1628837320:get_sources
+[0Ksection_start:1628837320:restore_cache
+[0K[0K[36;1mRestoring cache[0;m
+[0;msection_end:1628837322:restore_cache
+[0Ksection_start:1628837322:download_artifacts
+[0K[0K[36;1mDownloading artifacts[0;m
+[0;msection_end:1628837324:download_artifacts
+[0Ksection_start:1628837324:build_script
+[0K[0K[36;1mRunning before_script and script[0;m
+[0;m[0KAuthenticating with credentials from /root/.docker/config.json
+[0;m[32;1m$ docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY[0;m
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[32;1m$ docker pull $IMAGE_TAG_LATEST || true[0;m
+latest: Pulling from snosratiershad/bdoksandbox
+Digest: sha256:84f6066de2104ee012bcf6c8fbde0b76536824d8e04ba6785755f5d55beafa24
+Status: Image is up to date for registry.mybdok.ir/snosratiershad/bdoksandbox:latest
+registry.mybdok.ir/snosratiershad/bdoksandbox:latest
+[32;1m$ docker build --cache-from $IMAGE_TAG_STAGING -t $IMAGE_TAG_STAGING -t $IMAGE_TAG_LATEST -f Dockerfile .[0;m
+Sending build context to Docker daemon    257kB
+
+Step 1/9 : FROM python
+ ---> b2278d5ae327
+Step 2/9 : ENV TZ=Asia/Tehran
+ ---> Running in 2cd82771722b
+Removing intermediate container 2cd82771722b
+ ---> fc0c2ff908ec
+Step 3/9 : RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ ---> Running in e16b3623d656
+Removing intermediate container e16b3623d656
+ ---> 6cc0899665d4
+Step 4/9 : RUN mkdir -p /usr/app/core
+ ---> Running in ba00d4404855
+Removing intermediate container ba00d4404855
+ ---> a133d38dfe13
+Step 5/9 : WORKDIR /usr/app/core
+ ---> Running in cec186ba2d9b
+Removing intermediate container cec186ba2d9b
+ ---> 619c608db7e3
+Step 6/9 : RUN apt-get update && apt-get install -y build-essential libaio-dev python3-aiofiles libffi-dev python3-dev
+ ---> Running in fe68ca4462ea
+Err:1 http://deb.debian.org/debian buster InRelease
+  Connection failed [IP: 151.101.14.132 80]
+Err:2 http://security.debian.org/debian-security buster/updates InRelease
+  Connection failed [IP: 199.232.138.132 80]
+Get:3 http://deb.debian.org/debian buster-updates InRelease [51.9 kB]
+Err:3 http://deb.debian.org/debian buster-updates InRelease
+  Connection failed [IP: 151.101.14.132 80]
+Reading package lists...
+[91mW: Failed to fetch http://deb.debian.org/debian/dists/buster/InRelease  Connection failed [IP: 151.101.14.132 80]
+W: Failed to fetch http://security.debian.org/debian-security/dists/buster/updates/InRelease  Connection failed [IP: 199.232.138.132 80]
+W: Failed to fetch http://deb.debian.org/debian/dists/buster-updates/InRelease  Connection failed [IP: 151.101.14.132 80]
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+[0mReading package lists...
+Building dependency tree...
+Reading state information...
+Package build-essential is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+Package python3-dev is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+[91mE: Package 'build-essential' has no installation candidate
+E: Unable to locate package libaio-dev
+E: Unable to locate package python3-aiofiles
+E: Package 'python3-dev' has no installation candidate
+[0mThe command '/bin/sh -c apt-get update && apt-get install -y build-essential libaio-dev python3-aiofiles libffi-dev python3-dev' returned a non-zero code: 100
+section_end:1628837454:build_script
+[0Ksection_start:1628837454:after_script
+[0K[0K[36;1mRunning after_script[0;m
+[0;msection_end:1628837456:after_script
+[0Ksection_start:1628837456:upload_artifacts_on_failure
+[0K[0K[36;1mUploading artifacts for failed job[0;m
+[0;msection_end:1628837458:upload_artifacts_on_failure
+[0K[31;1mERROR: Job failed: exit code 100
+[0;m

@@ -1,36 +1,48 @@
-default:
-  image: m.docker-registry.ir/docker
+image: registry.mybdok.ir/infrastrucutre/docker/docker:latest
+
+services:
+    - registry.mybdok.ir/infrastrucutre/docker/docker:dind
 stages:
   - build
-  - build_other
   - deploy
 
-variables:
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  IMAGE_TAG_LATEST: registry.mybdok.ir/snosratiershad/bdokpublic/python:latest
-  IMAGE_TAG_PRODUCTION: registry.mybdok.ir/snosratiershad/bdokpublic/python:production
-  NGINX_IMAGE_TAG_LATEST: registry.mybdok.ir/snosratiershad/bdokpublic/python:latest
 
-image: $IMAGE_TAG_LATEST
+variables:
+  IMAGE_TAG_LATEST: $CI_REGISTRY_IMAGE:latest
+  IMAGE_TAG_STAGING: $CI_REGISTRY_IMAGE:staging
+  IMAGE_TAG_PRODUCTION: $CI_REGISTRY_IMAGE:production
+
+
+
 
 python-docker-build:
   stage: build
+  only:
+    - develop
   before_script:
-    - echo "$REG_PASS" | docker login registry.mybdok.ir --username root --password-stdin
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+  tags:
+    - docker
   script:
     - docker pull $IMAGE_TAG_LATEST || true
-    - docker build --cache-from $IMAGE_TAG_PRODUCTION -t $IMAGE_TAG_PRODUCTION -t $IMAGE_TAG_LATEST -f Dockerfile.composer .
+    - docker build --cache-from $IMAGE_TAG_STAGING -t $IMAGE_TAG_STAGING -t $IMAGE_TAG_LATEST -f Dockerfile .
     - docker push $IMAGE_TAG_PRODUCTION
     - docker push $IMAGE_TAG_LATEST
 
-before_script:
-  - python -V  # Print out python version for debugging
-  - pip install virtualenv
-  - virtualenv venv
-  - source venv/bin/activate
+deploy:
+  stage: deploy
+  tags:
+    - deploy.staging
 
-run:
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
   script:
-    - pip install -r requirements/develop.txt
-    - python app/main.py
-
+    - ssh -o StrictHostKeyChecking=no root@185.183.182.36"; sudo docker-compose up -d  --force-recreate"
+  rules:
+      - if: '$CI_COMMIT_BRANCH=="develop"'
+        when: always
+      - when: never
